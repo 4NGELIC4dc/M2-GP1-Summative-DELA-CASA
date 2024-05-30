@@ -2,13 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>M2Q3 - DELA CASA</title>
+    <title>M2 SUMMATIVE - DELA CASA</title>
     <script src="/plugins/phaser.min.js"></script>
     <script src="/plugins/AnimatedTiles.min.js"></script>
+    <script type="module" src="/scenes/MainMenu.js"></script>
+    <script type="module" src="/scenes/LevelMenu.js"></script>
+    <script type="module" src="/scenes/GameScene1.js"></script>
+    <script type="module" src="/scenes/GameScene2.js"></script>
     <script type="module" src="/scenes/GameScene3.js"></script>
 </head>
 <body>
     <script type="module">
+        import { MainMenu } from './scenes/MainMenu.js';
+        import { LevelMenu } from './scenes/LevelMenu.js';
+        import { GameScene1 } from './scenes/GameScene1.js';
+        import { GameScene2 } from './scenes/GameScene2.js';
         import { GameScene3 } from './scenes/GameScene3.js';
 
         // Ensure MainScene is loaded correctly
@@ -18,7 +26,7 @@
                 type: Phaser.AUTO,
                 width: 420,
                 height: 320,
-                scene: [GameScene3],  
+                scene: [MainMenu, LevelMenu, GameScene1, GameScene2, GameScene3],
                 physics: {
                     default: "arcade",
                     arcade: {

@@ -5,21 +5,33 @@ export class GameScene3 extends Phaser.Scene {
     }
 
     preload() {
-        // Load tilemap and assets
+        // Load tilemap
         this.load.tilemapTiledJSON("map3", "/assets/tiles/DarkDungeon-03.json");
+
+        // Load sprites
         this.load.image("tiles", "assets/png/spritesheet(01).png");
         this.load.image("key", "assets/png/16x16keySprite.png");
         this.load.image("chest", "assets/png/16x16chestSprite.png");
         this.load.image("heart", "assets/png/34x34heartSprite.png");
-        this.load.image("spikeDown", "assets/png/16x16spikeSprite.png");
-        this.load.image("spikeUp", "assets/png/16x16spikeSprite02.png");
-        this.load.image("txt_game_complete", "assets/png/txt_game_complete.png");
-        this.load.image("txt_game_over", "assets/png/txt_game_over.png");
-        this.load.image("button_retry", "assets/png/button-metal01_retry.png");
         this.load.image("ghost", "assets/png/16x16ghostSprite.png");
         this.load.image("water", "assets/png/16x16waterSprite.png");
+        this.load.image("spikeDown", "assets/png/16x16spikeSprite.png");
+        this.load.image("spikeUp", "assets/png/16x16spikeSprite02.png");
+
+        //Load text images
+        this.load.image("txt_game_complete", "assets/png/txt_game_complete.png");
+        this.load.image("txt_game_over", "assets/png/txt_game_over.png");
+        this.load.image("txt_lvl3", "assets/png/txt_lvl3.png");
+
+        // Load buttons
+        this.load.image("btn_retry", "assets/png/btn_retry.png");
+        this.load.image("btn_menu", "assets/png/btn_menu.png");
+
+        // Load animated sprites
         this.load.spritesheet("coin", "assets/png/16x16coinSprite.png", { frameWidth: 16, frameHeight: 16 });
         this.load.spritesheet("knight", "assets/png/16x16knightSprite.png", { frameWidth: 16, frameHeight: 16 });
+
+        // Load audio
         this.load.audio("coinSfx", "assets/mp3/coin_sfx.mp3");
         this.load.audio("hurtSfx", "assets/mp3/hurt_sfx.mp3");
         this.load.audio("jumpSfx", "assets/mp3/jump_sfx.mp3");
@@ -112,6 +124,12 @@ export class GameScene3 extends Phaser.Scene {
             heart.setScale(0.5);
             heart.setScrollFactor(0);
         });
+
+        // Add level text
+        this.levelText = this.add.image(this.cameras.main.centerX, 10, "txt_lvl3");
+        this.levelText.setOrigin(0.5, 0);
+        this.levelText.setScrollFactor(0);
+        this.levelText.setScale(0.45);
 
         // Add object layers
         this.createCoins(map.getObjectLayer("coinsObject").objects);
@@ -292,7 +310,7 @@ export class GameScene3 extends Phaser.Scene {
             }
             this.canBeHurt = false;
             this.time.addEvent({
-                delay: 500, 
+                delay: 1000, 
                 callback: () => {
                     this.canBeHurt = true;  
                 }
@@ -318,7 +336,7 @@ export class GameScene3 extends Phaser.Scene {
         completeText.setScale(0.35);
 
         // Add retry button
-        const retryButton = this.add.image(this.cameras.main.centerX, this.cameras.main.centerY + 50, "button_retry");
+        const retryButton = this.add.image(this.cameras.main.centerX, this.cameras.main.centerY + 50, "btn_retry").setOrigin(-0.25, 0.5);
         retryButton.setScrollFactor(0);
         retryButton.setScale(0.10);
         retryButton.setInteractive();
@@ -333,6 +351,24 @@ export class GameScene3 extends Phaser.Scene {
 
         retryButton.on('pointerout', () => {
             retryButton.clearTint();
+        });
+
+        // Add menu button
+        const menuButton = this.add.image(this.cameras.main.centerX, this.cameras.main.centerY + 50, "btn_menu").setOrigin(1.25, 0.5);
+        menuButton.setScrollFactor(0);
+        menuButton.setScale(0.10);
+        menuButton.setInteractive();
+        menuButton.on('pointerup', () => {
+            this.clickSfx.play();
+            this.scene.start('MainMenu');
+        });
+
+        menuButton.on('pointerover', () => {
+            menuButton.setTint(0x808080);
+        });
+
+        menuButton.on('pointerout', () => {
+            menuButton.clearTint();
         });
 
         this.player.setVelocity(0, 0);
@@ -348,7 +384,7 @@ export class GameScene3 extends Phaser.Scene {
         this.loseSfx.play();
 
         // Add retry button
-        const retryButton = this.add.image(this.cameras.main.centerX, this.cameras.main.centerY + 50, "button_retry");
+        const retryButton = this.add.image(this.cameras.main.centerX, this.cameras.main.centerY + 50, "btn_retry").setOrigin(-0.25, 0.5);
         retryButton.setScrollFactor(0);
         retryButton.setScale(0.10);
         retryButton.setInteractive();
@@ -365,6 +401,23 @@ export class GameScene3 extends Phaser.Scene {
             retryButton.clearTint();
         });
 
+        // Add menu button
+        const menuButton = this.add.image(this.cameras.main.centerX, this.cameras.main.centerY + 50, "btn_menu").setOrigin(1.25, 0.5);
+        menuButton.setScrollFactor(0);
+        menuButton.setScale(0.10);
+        menuButton.setInteractive();
+        menuButton.on('pointerup', () => {
+            this.clickSfx.play();
+            this.scene.start('MainMenu');
+        });
+
+        menuButton.on('pointerover', () => {
+            menuButton.setTint(0x808080);
+        });
+
+        menuButton.on('pointerout', () => {
+            menuButton.clearTint();
+        });
         this.player.setVelocity(0, 0);
         this.player.body.enable = false;
     }

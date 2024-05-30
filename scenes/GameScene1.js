@@ -18,9 +18,12 @@ export class GameScene1 extends Phaser.Scene {
         // Load text images
         this.load.image("txt_game_complete", "assets/png/txt_game_complete.png");
         this.load.image("txt_game_over", "assets/png/txt_game_over.png");
+        this.load.image("txt_lvl1", "assets/png/txt_lvl1.png");
 
         // Load buttons
-        this.load.image("button_retry", "assets/png/button-metal01_retry.png")
+        this.load.image("btn_retry", "assets/png/btn_retry.png");
+        this.load.image("btn_menu", "assets/png/btn_menu.png");
+        this.load.image("btn_next", "assets/png/btn_next.png");
 
         // Load animated sprites
         this.load.spritesheet("coin", "assets/png/16x16coinSprite.png", { frameWidth: 16, frameHeight: 16 });
@@ -119,6 +122,12 @@ export class GameScene1 extends Phaser.Scene {
             heart.setScale(0.5);
             heart.setScrollFactor(0);
         });
+
+        // Add level text
+        this.levelText = this.add.image(this.cameras.main.centerX, 10, "txt_lvl1");
+        this.levelText.setOrigin(0.5, 0);
+        this.levelText.setScrollFactor(0);
+        this.levelText.setScale(0.45);
 
         // Add object layers
         this.createCoins(map.getObjectLayer("coinsObject").objects);
@@ -264,7 +273,7 @@ export class GameScene1 extends Phaser.Scene {
             }
             this.canBeHurt = false;
             this.time.addEvent({
-                delay: 500, 
+                delay: 1000, 
                 callback: () => {
                     this.canBeHurt = true;  
                 }
@@ -282,7 +291,7 @@ export class GameScene1 extends Phaser.Scene {
         completeText.setScale(0.35);
 
         // Add retry button
-        const retryButton = this.add.image(this.cameras.main.centerX, this.cameras.main.centerY + 50, "button_retry");
+        const retryButton = this.add.image(this.cameras.main.centerX, this.cameras.main.centerY + 50, "btn_retry").setOrigin(-1, 0.5);
         retryButton.setScrollFactor(0);
         retryButton.setScale(0.10);
         retryButton.setInteractive();
@@ -297,6 +306,42 @@ export class GameScene1 extends Phaser.Scene {
 
         retryButton.on('pointerout', () => {
             retryButton.clearTint();
+        });
+
+        // Add menu button
+        const menuButton = this.add.image(this.cameras.main.centerX, this.cameras.main.centerY + 50, "btn_menu").setOrigin(2, 0.5);
+        menuButton.setScrollFactor(0);
+        menuButton.setScale(0.10);
+        menuButton.setInteractive();
+        menuButton.on('pointerup', () => {
+            this.clickSfx.play();
+            this.scene.start('MainMenu');
+        });
+
+        menuButton.on('pointerover', () => {
+            menuButton.setTint(0x808080);
+        });
+
+        menuButton.on('pointerout', () => {
+            menuButton.clearTint();
+        });
+
+        // Add next level button
+        const nextButton = this.add.image(this.cameras.main.centerX, this.cameras.main.centerY + 100, "btn_next").setOrigin(0.5, 1.70);
+        nextButton.setScrollFactor(0);
+        nextButton.setScale(0.10);
+        nextButton.setInteractive();
+        nextButton.on('pointerup', () => {
+            this.clickSfx.play();
+            this.scene.start('GameScene2');
+        });
+
+        nextButton.on('pointerover', () => {
+            nextButton.setTint(0x808080);
+        });
+
+        nextButton.on('pointerout', () => {
+            nextButton.clearTint();
         });
 
         this.player.setVelocity(0, 0);
@@ -312,7 +357,7 @@ export class GameScene1 extends Phaser.Scene {
         this.loseSfx.play();
 
         // Add retry button
-        const retryButton = this.add.image(this.cameras.main.centerX, this.cameras.main.centerY + 50, "button_retry");
+        const retryButton = this.add.image(this.cameras.main.centerX, this.cameras.main.centerY + 50, "btn_retry").setOrigin(-0.25, 0.5);
         retryButton.setScrollFactor(0);
         retryButton.setScale(0.10);
         retryButton.setInteractive();
@@ -327,6 +372,24 @@ export class GameScene1 extends Phaser.Scene {
 
         retryButton.on('pointerout', () => {
             retryButton.clearTint();
+        });
+
+        // Add menu button
+        const menuButton = this.add.image(this.cameras.main.centerX, this.cameras.main.centerY + 50, "btn_menu").setOrigin(1.25, 0.5);
+        menuButton.setScrollFactor(0);
+        menuButton.setScale(0.10);
+        menuButton.setInteractive();
+        menuButton.on('pointerup', () => {
+            this.clickSfx.play();
+            this.scene.start('MainMenu');
+        });
+
+        menuButton.on('pointerover', () => {
+            menuButton.setTint(0x808080);
+        });
+
+        menuButton.on('pointerout', () => {
+            menuButton.clearTint();
         });
 
         this.player.setVelocity(0, 0);
